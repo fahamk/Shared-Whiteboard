@@ -23,6 +23,7 @@ import javax.swing.JComponent;
 public class DrawArea extends JComponent implements Runnable {
   public Socket kkSocket = null;
   public static BufferedReader in = null;
+  public static PrintWriter out = null;
 
   // Image in which we're going to draw
   private Image image;
@@ -32,11 +33,6 @@ public class DrawArea extends JComponent implements Runnable {
   private int currentX, currentY, oldX, oldY;
  
   public DrawArea() throws IOException{
-	
-
-    
-
-
     try {
         kkSocket = new Socket("localhost", 4444);
         in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream())); 
@@ -49,29 +45,38 @@ public class DrawArea extends JComponent implements Runnable {
     }
     /////////// Recieving Data From Server in another thread
     Runnable DrawArea = new Runnable(){  
-      public void run(){
-         System.out.println("Runnable running");
-         String inputLine;
-         try {
-			while ((inputLine = in.readLine()) != null) {
-				
-			     //System.out.println(inputLine);
-			     String[] retval= inputLine.split(",");
-			     if(g2!=null){
-			     	//System.out.println("Its good");
-			     	g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
-			     	//System.out.println(Integer.parseInt(retval[0]));
-			     }
-			     repaint();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-      }
+        public void run(){
+            System.out.println("Runnable running");
+            String inputLine;
+            try {
+                /*while (true) {
+                    if (in.ready()) {
+                        if ((inputLine = in.readLine()) != null) {
+                            String[] retval = inputLine.split(",");
+                            if (g2!=null){
+                                g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
+                            }
+                            repaint();
+                        }
+                    }
+                }*/
+                while ((inputLine = in.readLine()) != null) {
+                    String[] retval= inputLine.split(",");
+                    if(g2!=null){
+                        g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
+                    }
+                    repaint();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     };
 
     Thread thread = new Thread(DrawArea);
     thread.start();
+    out = new PrintWriter(kkSocket.getOutputStream(), true);
+    
     
   ////////// Above is the
   
@@ -96,6 +101,7 @@ public class DrawArea extends JComponent implements Runnable {
           // draw line if g2 context not null
           g2.drawLine(oldX, oldY, currentX, currentY);
         try {
+            
 			sender(oldX,oldY,currentX,currentY, kkSocket);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -109,18 +115,23 @@ public class DrawArea extends JComponent implements Runnable {
         }
       }
     });
+    
+    if (g2 == null) {
+        out.println("waiting");
+    } else {
+        out.println("ready");
+    }
   }
   
   // sends drawn data to server 
   public void sender(int ox, int oy, int cx, int cy, Socket kkSocket) throws IOException{
-  	 PrintWriter out = null;
+  	 //PrintWriter out = null;
 
 
-     out = new PrintWriter(kkSocket.getOutputStream(), true);
-	 String sending= Integer.toString(ox)+","+Integer.toString(oy)+","+Integer.toString(cx)+","+Integer.toString(cy);
-     
-     out.println(sending);
-  	 out.println("---------------------------------------------");
+     //out = new PrintWriter(kkSocket.getOutputStream(), true);
+	String sending= Integer.toString(ox)+","+Integer.toString(oy)+","+Integer.toString(cx)+","+Integer.toString(cy);
+        out.println(sending);
+        //out.println("---------------------------------------------");
   }
  
   protected void paintComponent(Graphics g) {

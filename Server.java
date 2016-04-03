@@ -20,7 +20,7 @@ public class Server {
             try {
                 Socket clientSocket = serverSocket.accept();
                 new Thread(new MultiThreadedRunnable(clientSocket, points)).start();
-                System.out.println(points);
+                //System.out.println(points);
             } catch (Exception e) {
                 System.err.println("Accept failed.");
                 System.exit(1);

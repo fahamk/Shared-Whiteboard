@@ -8,10 +8,12 @@ public class MultiThreadedRunnable implements Runnable {
 	final static String CRLF = "\r\n";
 	Socket socket;
 	ArrayList<String> points = new ArrayList<String>();
+	int currentSize;
 	
 	public MultiThreadedRunnable (Socket socket, ArrayList<String> points) throws Exception {
 		this.socket = socket;
 		this.points = points;
+		this.currentSize = -1;
 	}
 	
 	public void run() {
@@ -24,22 +26,50 @@ public class MultiThreadedRunnable implements Runnable {
 		}
 	}
 	
+	private void update(int currentSize, PrintWriter out) {
+		
+	}
+	
 	private void processRequest() throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 		String inputLine, outputLine;
 		
-		//outputLine = dp.processInput(null);
-		//out.println(outputLine);
-		
-		while ((inputLine = in.readLine()) != null) {
-                    //out.println("50,50,200,200");
-                    points.add(inputLine);
-                    System.out.println(points.size());
+		//while ((inputLine = in.readLine()) != null) {
+		while (true) {
+			if (currentSize >= 0) {
+			
+				if (currentSize < points.size()) {
+					for (int i = currentSize; i < points.size(); i++) {
+						out.println(points.get(i));
+					}
+					currentSize = points.size();
+				}
+			}
+			//inputLine = in.readLine();
+			if (in.ready()) {
+				if (currentSize >= 0 && currentSize < points.size()) {
+					for (int i = currentSize; i < points.size(); i++) {
+						out.println(points.get(i));
+					}
+					currentSize = points.size();
+				}
+			
+			
+				inputLine = in.readLine();
+				if (inputLine != null && !"ready".equals(inputLine) && !"waiting".equals(inputLine)) {
+					points.add(inputLine);
+					//System.out.println(currentSize);
+					currentSize++;
+				} else if ("ready".equals(inputLine)) {
+					currentSize = 0;
+				}
+			}
+			
 			
 		}
-		out.close();
-		in.close();
-		socket.close();
+		//out.close();
+		//in.close();
+		//socket.close();
 	}
 }
