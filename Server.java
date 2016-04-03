@@ -2,11 +2,15 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 import java.lang.Thread;
-
+import java.util.Random;
+import java.awt.*;
+import java.lang.*;
 public class Server {
     public static void main(String[] args) throws IOException {
         ArrayList<String> points = new ArrayList<String>();
         ServerSocket serverSocket = null;
+       
+        
         
         try {
             serverSocket = new ServerSocket(4444);
@@ -19,13 +23,20 @@ public class Server {
         while (true) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                new Thread(new MultiThreadedRunnable(clientSocket, points)).start();
+                Color randColor=randomColours();
+                System.out.println(randColor);
+                String col=String.valueOf(randColor.getRGB());
+				
+                new Thread(new MultiThreadedRunnable(clientSocket, points, col)).start();
                 //System.out.println(points);
             } catch (Exception e) {
                 System.err.println("Accept failed.");
                 System.exit(1);
             }
         }
+          
+             
+        
 /*
         Socket clientSocket = null;
         try {
@@ -52,5 +63,16 @@ public class Server {
         in.close();
         clientSocket.close();
         serverSocket.close();*/
+    }
+    public static Color randomColours(){
+    	Random rand=new Random();
+    	float a=rand.nextFloat();
+    	float b= rand.nextFloat();
+    	float c=rand.nextFloat();
+    	
+    	Color randomColor=new Color(a,b,c);
+    	
+    	return randomColor;
+    
     }
 }

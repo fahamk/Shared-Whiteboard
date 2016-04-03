@@ -3,17 +3,22 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.awt.*;
+import java.lang.*;
 
 public class MultiThreadedRunnable implements Runnable {
 	final static String CRLF = "\r\n";
 	Socket socket;
 	ArrayList<String> points = new ArrayList<String>();
 	int currentSize;
+	String color;
 	
-	public MultiThreadedRunnable (Socket socket, ArrayList<String> points) throws Exception {
+	public MultiThreadedRunnable (Socket socket, ArrayList<String> points, String color) throws Exception {
 		this.socket = socket;
 		this.points = points;
 		this.currentSize = -1;
+		this.color= color;
+		//this.color=color;
 	}
 	
 	public void run() {
@@ -34,6 +39,8 @@ public class MultiThreadedRunnable implements Runnable {
 		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 		String inputLine, outputLine;
+		System.out.println("Color"+":"+color);
+		out.println("Color"+":"+color);
 		
 		//while ((inputLine = in.readLine()) != null) {
 		while (true) {
