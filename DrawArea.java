@@ -24,7 +24,7 @@ public class DrawArea extends JComponent implements Runnable {
   public Socket kkSocket = null;
   public static BufferedReader in = null;
   public static PrintWriter out = null;
-
+  public static String color=null;
   // Image in which we're going to draw
   private Image image;
   // Graphics2D object ==> used to draw on
@@ -61,8 +61,21 @@ public class DrawArea extends JComponent implements Runnable {
                     }
                 }*/
                 while ((inputLine = in.readLine()) != null) {
+                	if(inputLine.contains("Color")){
+                		String[] getColor=inputLine.split(":");
+                		color=getColor[1];
+                		System.out.println("Got String");
+                	}
+                	
+                	
+                	
                     String[] retval= inputLine.split(",");
+                    
+
                     if(g2!=null){
+                    	int colorRGB=Integer.parseInt(retval[4]);
+                    	Color lineColor=new Color(colorRGB);
+                    	g2.setPaint(lineColor);
                         g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
                     }
                     repaint();
@@ -96,13 +109,14 @@ public class DrawArea extends JComponent implements Runnable {
         // coord x,y when drag mouse
         currentX = e.getX();
         currentY = e.getY();
+        black();
  
         if (g2 != null) {
           // draw line if g2 context not null
           g2.drawLine(oldX, oldY, currentX, currentY);
         try {
             
-			sender(oldX,oldY,currentX,currentY, kkSocket);
+			sender(oldX,oldY,currentX,currentY, kkSocket, color);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -124,12 +138,12 @@ public class DrawArea extends JComponent implements Runnable {
   }
   
   // sends drawn data to server 
-  public void sender(int ox, int oy, int cx, int cy, Socket kkSocket) throws IOException{
+  public void sender(int ox, int oy, int cx, int cy, Socket kkSocket, String color) throws IOException{
   	 //PrintWriter out = null;
 
 
      //out = new PrintWriter(kkSocket.getOutputStream(), true);
-	String sending= Integer.toString(ox)+","+Integer.toString(oy)+","+Integer.toString(cx)+","+Integer.toString(cy);
+	String sending= Integer.toString(ox)+","+Integer.toString(oy)+","+Integer.toString(cx)+","+Integer.toString(cy)+","+color;
         out.println(sending);
         //out.println("---------------------------------------------");
   }
