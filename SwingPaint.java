@@ -62,7 +62,7 @@ public class SwingPaint {
     JPanel controls = new JPanel();
  	controls.setLayout(new BorderLayout());
  	 
-    clearBtn = new JButton("Clear");
+    clearBtn = new JButton("Clear Your Own Screen");
     
     clearBtn.addActionListener(actionListener);
     
