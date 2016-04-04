@@ -17,7 +17,7 @@ public class SwingPaint {
   JTextField IP, port;
   DrawArea drawArea;
   public Container content;
-  public JFrame frame	;
+  public JFrame frame;
   
   ActionListener actionListener = new ActionListener() {
 
@@ -25,6 +25,10 @@ public class SwingPaint {
   public void actionPerformed(ActionEvent e) {
       if (e.getSource() == clearBtn) {
         drawArea.clear();
+      }else if(e.getSource()==disconnect){
+         drawArea.disconnect();
+         
+         
       } //else if (e.getSource()== connect){
 		    
       //} 
@@ -87,6 +91,9 @@ public class SwingPaint {
  	
  	
  	disconnect=new JButton("Disconnect");
+ 	
+ 	disconnect.addActionListener(actionListener);
+ 	
  	IP=new JTextField("IP address");
  	
  	//adds on click clear textfield for IP textfield
@@ -122,10 +129,11 @@ public class SwingPaint {
     // add to panel
 
 
-    controls.add(clearBtn, BorderLayout.WEST);
-    controls.add(port, BorderLayout.CENTER);
-    controls.add(IP, BorderLayout.AFTER_LAST_LINE);
-    controls.add(connect, BorderLayout.EAST);
+    controls.add(clearBtn, BorderLayout.SOUTH);
+    controls.add(port, BorderLayout.EAST);
+    controls.add(IP, BorderLayout.CENTER);
+    controls.add(disconnect, BorderLayout.WEST);
+    controls.add(connect, BorderLayout.NORTH);
     // add to content pane
     content.add(controls, BorderLayout.NORTH);
  

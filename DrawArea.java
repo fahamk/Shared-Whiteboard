@@ -197,6 +197,17 @@ public class DrawArea extends JComponent implements Runnable {
     g2.setPaint(Color.black);
   }
   
+  public void disconnect(){
+  	
+  	try{
+  		System.out.println("Its here");	
+  		kkSocket.close();	
+  	}catch (IOException e){
+  		System.err.println("Not connected in the first place");
+  	}
+  	
+  }
+  
   public void connect(){
   
   }
