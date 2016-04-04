@@ -79,23 +79,24 @@ public class DrawArea extends JComponent implements Runnable {
 
                 	}
                 	
+                	else{
                 	
-                	
-                    String[] retval= inputLine.split(",");
-                    
-
-                    if(g2!=null){
-                    	try{
-		                	int colorRGB=Integer.parseInt(retval[4]);
-		                	Color lineColor=new Color(colorRGB);
-		                	g2.setPaint(lineColor);
-		                    g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
-		                }catch(ArrayIndexOutOfBoundsException e){
-		                	System.out.println("");
+		                String[] retval= inputLine.split(",");
 		                
+
+		                if(g2!=null){
+		                	try{
+				            	int colorRGB=Integer.parseInt(retval[4]);
+				            	Color lineColor=new Color(colorRGB);
+				            	g2.setPaint(lineColor);
+				                g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
+				            }catch(ArrayIndexOutOfBoundsException e){
+				            	System.out.println("");
+				            
+				            }
 		                }
+		                repaint();
                     }
-                    repaint();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
