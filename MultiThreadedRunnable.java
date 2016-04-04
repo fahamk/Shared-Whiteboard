@@ -64,12 +64,18 @@ public class MultiThreadedRunnable implements Runnable {
 			
 			
 				inputLine = in.readLine();
-				if (inputLine != null && !"ready".equals(inputLine) && !"waiting".equals(inputLine)) {
+				if (inputLine != null && !"ready".equals(inputLine) && !"waiting".equals(inputLine) && !"disconnect".equals(inputLine)) {
 					points.add(inputLine);
 					//System.out.println(currentSize);
 					currentSize++;
 				} else if ("ready".equals(inputLine)) {
 					currentSize = 0;
+				} else if ("disconnect".equals(inputLine)) {
+                                    //System.out.println("Client Disconnected");
+                                    out.close();
+                                    in.close();
+                                    socket.close();
+                                    break;
 				}
 			}
 			

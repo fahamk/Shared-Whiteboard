@@ -31,6 +31,8 @@ public class SwingPaint {
          frame.revalidate();
          frame.repaint();
          
+        disconnect.setEnabled(false);
+        connect.setEnabled(true);
          
       } //else if (e.getSource()== connect){
 		    
@@ -79,7 +81,9 @@ public class SwingPaint {
 
 		    	content.add(drawArea);
     	
-
+                        
+                        disconnect.setEnabled(true);
+                        connect.setEnabled(false);
 
  			}catch(IOException r){
  				System.err.println("Error");
@@ -140,6 +144,10 @@ public class SwingPaint {
     controls.add(connect, BorderLayout.NORTH);
     // add to content pane
     content.add(controls, BorderLayout.NORTH);
+    
+    
+    disconnect.setEnabled(false);
+    
  
     frame.setSize(600, 600);
     // can close frame

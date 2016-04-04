@@ -201,6 +201,7 @@ public class DrawArea extends JComponent implements Runnable {
   	
   	try{
   		System.out.println("Its here");	
+  		out.println("disconnect");
   		kkSocket.close();	
   	}catch (IOException e){
   		System.err.println("Not connected in the first place");
