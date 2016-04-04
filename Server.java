@@ -1,3 +1,5 @@
+/* By: Theodore Tan & Faham Khan */
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -7,33 +9,39 @@ import java.awt.*;
 import java.lang.*;
 public class Server {
     public static void main(String[] args) throws IOException {
-        ArrayList<String> points = new ArrayList<String>();
-        ServerSocket serverSocket = null;
-       
-        
-        
-        try {
-            serverSocket = new ServerSocket(4444);
-            System.out.println("Server started on port: 4444");
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: 4444.");
+        if (args.length == 1) {
+            ArrayList<String> points = new ArrayList<String>();
+            ServerSocket serverSocket = null;
+            int arg = Integer.parseInt(args[0]);
+            
+            try {
+                serverSocket = new ServerSocket(arg);
+                System.out.println("Server started on port: "+ arg);
+            } catch (IOException e) {
+                System.err.println("Could not listen on port: "+ arg);
+                System.exit(1);
+            }
+            
+            while (true) {
+                try {
+                    Socket clientSocket = serverSocket.accept();
+                    Color randColor=randomColours();
+
+                    String col=String.valueOf(randColor.getRGB());
+                                    
+                    new Thread(new MultiThreadedRunnable(clientSocket, points, col)).start();
+                    //System.out.println(points);
+                } catch (Exception e) {
+                    System.err.println("Accept failed.");
+                    System.exit(1);
+                }
+            }
+        } else {
+            System.err.println("Incorrect Parameters");
             System.exit(1);
         }
         
-        while (true) {
-            try {
-                Socket clientSocket = serverSocket.accept();
-                Color randColor=randomColours();
 
-                String col=String.valueOf(randColor.getRGB());
-				
-                new Thread(new MultiThreadedRunnable(clientSocket, points, col)).start();
-                //System.out.println(points);
-            } catch (Exception e) {
-                System.err.println("Accept failed.");
-                System.exit(1);
-            }
-        }
           
              
         
