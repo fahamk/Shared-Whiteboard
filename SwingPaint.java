@@ -27,6 +27,9 @@ public class SwingPaint {
         drawArea.clear();
       }else if(e.getSource()==disconnect){
          drawArea.disconnect();
+         frame.remove(drawArea);
+         frame.revalidate();
+         frame.repaint();
          
          
       } //else if (e.getSource()== connect){
@@ -81,7 +84,8 @@ public class SwingPaint {
  			}catch(IOException r){
  				System.err.println("Error");
  			}
- 			frame.setSize(601, 600);
+ 			frame.revalidate();
+ 			frame.repaint();
  		}
  	});
  	
