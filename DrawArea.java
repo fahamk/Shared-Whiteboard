@@ -13,7 +13,8 @@ import java.net.*;
  
  
 import javax.swing.JComponent;
- 
+
+
 /**
 * Component for drawing !
 *
@@ -31,18 +32,27 @@ public class DrawArea extends JComponent implements Runnable {
   private Graphics2D g2;
   // Mouse coordinates
   private int currentX, currentY, oldX, oldY;
- 
-  public DrawArea() throws IOException{
-    try {
-        kkSocket = new Socket("localhost", 4444);
-        in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream())); 
-    } catch (UnknownHostException e) {
-        System.err.println("Don't know about host: taranis.");
-        System.exit(1);
-    } catch (IOException e) {
-        System.err.println("Couldn't get I/O for the connection to: taranis.");
-        System.exit(1);
-    }
+  boolean connect=true;
+  
+  public DrawArea(String IP, String Port) throws IOException{
+
+		try { 	
+		    kkSocket = new Socket(IP, Integer.parseInt(Port));
+		    in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream())); 
+		    connect=false;
+		} catch (UnknownHostException e) {
+		    System.err.println("Don't know about host: taranis.");
+		
+
+		} catch (IOException e) {
+		    System.err.println("Couldn't get I/O for the connection to: taranis.");
+
+		} catch (NumberFormatException e){
+			new SwingPaint();
+
+		
+		}
+    
     /////////// Recieving Data From Server in another thread
     Runnable DrawArea = new Runnable(){  
         public void run(){
@@ -60,11 +70,13 @@ public class DrawArea extends JComponent implements Runnable {
                         }
                     }
                 }*/
+                
+                
                 while ((inputLine = in.readLine()) != null) {
                 	if(inputLine.contains("Color")){
                 		String[] getColor=inputLine.split(":");
                 		color=getColor[1];
-                		System.out.println("Got String");
+
                 	}
                 	
                 	
@@ -73,16 +85,24 @@ public class DrawArea extends JComponent implements Runnable {
                     
 
                     if(g2!=null){
-                    	int colorRGB=Integer.parseInt(retval[4]);
-                    	Color lineColor=new Color(colorRGB);
-                    	g2.setPaint(lineColor);
-                        g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
+                    	try{
+		                	int colorRGB=Integer.parseInt(retval[4]);
+		                	Color lineColor=new Color(colorRGB);
+		                	g2.setPaint(lineColor);
+		                    g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
+		                }catch(ArrayIndexOutOfBoundsException e){
+		                	System.out.println("");
+		                
+		                }
                     }
                     repaint();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e){
+            	System.out.println("Enter proper stuff");
             }
+            
         }
     };
 
@@ -171,26 +191,15 @@ public class DrawArea extends JComponent implements Runnable {
     repaint();
   }
  
-  public void red() {
-    // apply red color on g2 context
-    g2.setPaint(Color.red);
-  }
  
   public void black() {
     g2.setPaint(Color.black);
   }
- 
-  public void magenta() {
-    g2.setPaint(Color.magenta);
+  
+  public void connect(){
+  
   }
  
-  public void green() {
-    g2.setPaint(Color.green);
-  }
- 
-  public void blue() {
-    g2.setPaint(Color.blue);
-  }
 
   public void run(){
   }

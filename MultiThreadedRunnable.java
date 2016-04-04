@@ -39,7 +39,7 @@ public class MultiThreadedRunnable implements Runnable {
 		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 		String inputLine, outputLine;
-		System.out.println("Color"+":"+color);
+
 		out.println("Color"+":"+color);
 		
 		//while ((inputLine = in.readLine()) != null) {

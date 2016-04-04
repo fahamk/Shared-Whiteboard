@@ -24,7 +24,7 @@ public class Server {
             try {
                 Socket clientSocket = serverSocket.accept();
                 Color randColor=randomColours();
-                System.out.println(randColor);
+
                 String col=String.valueOf(randColor.getRGB());
 				
                 new Thread(new MultiThreadedRunnable(clientSocket, points, col)).start();

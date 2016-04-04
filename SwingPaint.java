@@ -2,34 +2,35 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
- 
+import java.awt.event.*;
+import java.awt.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
- 
+import javax.swing.*;
 import java.io.*;
 import java.net.*;
  
 public class SwingPaint {
  
-  JButton clearBtn, blackBtn, blueBtn, greenBtn, redBtn, magentaBtn;
+  JButton clearBtn, connect, disconnect;
+  JTextField IP, port;
   DrawArea drawArea;
+  public Container content;
+  public JFrame frame	;
+  
   ActionListener actionListener = new ActionListener() {
- 
+
+
   public void actionPerformed(ActionEvent e) {
       if (e.getSource() == clearBtn) {
         drawArea.clear();
-      } else if (e.getSource() == blackBtn) {
-        drawArea.black();
-      } else if (e.getSource() == blueBtn) {
-        drawArea.blue();
-      } else if (e.getSource() == greenBtn) {
-        drawArea.green();
-      } else if (e.getSource() == redBtn) {
-        drawArea.red();
-      } else if (e.getSource() == magentaBtn) {
-        drawArea.magenta();
-      }
+      } //else if (e.getSource()== connect){
+		    
+      //} 
+      
+      
+      
     }
   };
  
@@ -39,40 +40,92 @@ public class SwingPaint {
  
   public void show() throws IOException{
     // create main frame
-    JFrame frame = new JFrame("Swing Paint");
-    Container content = frame.getContentPane();
+    String ip,portString;
+    frame = new JFrame("Swing Paint");
+    content = frame.getContentPane();
     // set layout on content pane
     content.setLayout(new BorderLayout());
     // create draw area
-    drawArea = new DrawArea();
+	//drawArea=new DrawArea("123","123");
  
     // add to content pane
-    content.add(drawArea, BorderLayout.CENTER);
+    //content.add(drawArea, BorderLayout.CENTER);
  
     // create controls to apply colors and call clear feature
     JPanel controls = new JPanel();
- 
+ 	controls.setLayout(new BorderLayout());
+ 	 
     clearBtn = new JButton("Clear");
+    
     clearBtn.addActionListener(actionListener);
-    blackBtn = new JButton("Black");
-    blackBtn.addActionListener(actionListener);
-    blueBtn = new JButton("Blue");
-    blueBtn.addActionListener(actionListener);
-    greenBtn = new JButton("Green");
-    greenBtn.addActionListener(actionListener);
-    redBtn = new JButton("Red");
-    redBtn.addActionListener(actionListener);
-    magentaBtn = new JButton("Magenta");
-    magentaBtn.addActionListener(actionListener);
- 
+    
+ 	
+ 	connect=new JButton("Connect");
+ 	connect.addActionListener(new ActionListener(){
+ 		
+ 		public void actionPerformed(ActionEvent e){
+ 			String ip=IP.getText();
+		    String portString=port.getText();
+		    try{
+		    
+		    	drawArea=new DrawArea(ip,portString);
+
+		    	content.add(drawArea);
+    	
+
+
+ 			}catch(IOException r){
+ 				System.err.println("Error");
+ 			}
+ 			frame.setSize(601, 600);
+ 		}
+ 	});
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	disconnect=new JButton("Disconnect");
+ 	IP=new JTextField("IP address");
+ 	
+ 	//adds on click clear textfield for IP textfield
+ 	IP.addMouseListener(new MouseAdapter(){
+ 		
+ 	    @Override
+ 	    public void mouseClicked(MouseEvent e){
+ 	    	if (IP.getText().contains("IP address")){
+ 	    		IP.setText("");
+ 	    	}
+ 	    }
+ 	});
+ 	
+ 	
+ 	
+ 	port=new JTextField("Port Number");
+ 	//adds on click clear textfield for port textfield
+ 	port.addMouseListener(new MouseAdapter(){
+ 		
+ 	    @Override
+ 	    public void mouseClicked(MouseEvent e){
+ 	    	if (port.getText().contains("Port Number")){
+ 	    		port.setText("");
+ 	    	}
+ 	    }
+ 	});
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	connect.addActionListener(actionListener);
     // add to panel
-    controls.add(greenBtn);
-    controls.add(blueBtn);
-    controls.add(blackBtn);
-    controls.add(redBtn);
-    controls.add(magentaBtn);
-    controls.add(clearBtn);
- 
+
+
+    controls.add(clearBtn, BorderLayout.WEST);
+    controls.add(port, BorderLayout.CENTER);
+    controls.add(IP, BorderLayout.AFTER_LAST_LINE);
+    controls.add(connect, BorderLayout.EAST);
     // add to content pane
     content.add(controls, BorderLayout.NORTH);
  
