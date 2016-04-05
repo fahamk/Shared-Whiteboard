@@ -6,6 +6,7 @@ import java.util.*;
 import java.awt.*;
 import java.lang.*;
 
+//multithreading for server, to contain multiple clients
 public class MultiThreadedRunnable implements Runnable {
 	final static String CRLF = "\r\n";
 	Socket socket;
@@ -18,7 +19,7 @@ public class MultiThreadedRunnable implements Runnable {
 		this.points = points;
 		this.currentSize = -1;
 		this.color= color;
-		//this.color=color;
+
 	}
 	
 	public void run() {
@@ -81,8 +82,6 @@ public class MultiThreadedRunnable implements Runnable {
 			
 			
 		}
-		//out.close();
-		//in.close();
-		//socket.close();
+	
 	}
 }

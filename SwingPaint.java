@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.io.*;
 import java.net.*;
  
+ 
+//create a gui for the client 
 public class SwingPaint {
  
   JButton clearBtn, connect, disconnect;
@@ -34,9 +36,7 @@ public class SwingPaint {
         disconnect.setEnabled(false);
         connect.setEnabled(true);
          
-      } //else if (e.getSource()== connect){
-		    
-      //} 
+      }
       
       
       
@@ -55,10 +55,6 @@ public class SwingPaint {
     // set layout on content pane
     content.setLayout(new BorderLayout());
     // create draw area
-	//drawArea=new DrawArea("123","123");
- 
-    // add to content pane
-    //content.add(drawArea, BorderLayout.CENTER);
  
     // create controls to apply colors and call clear feature
     JPanel controls = new JPanel();
@@ -69,6 +65,7 @@ public class SwingPaint {
     clearBtn.addActionListener(actionListener);
     
  	
+ 	//add drawing area content to frame after connecting properly 
  	connect=new JButton("Connect");
  	connect.addActionListener(new ActionListener(){
  		
@@ -97,7 +94,7 @@ public class SwingPaint {
  	
  	
  	
- 	
+ 	//disconnect button
  	disconnect=new JButton("Disconnect");
  	
  	disconnect.addActionListener(actionListener);
@@ -155,7 +152,7 @@ public class SwingPaint {
     // show the swing paint result
     frame.setVisible(true);
  
-    // Now you can try our Swing Paint !!! Enjoy <img src="http://www.ssaurel.com/blog/wp-includes/images/smilies/icon_biggrin.gif" alt=":D" class="wp-smiley">
+
   }
  
 }

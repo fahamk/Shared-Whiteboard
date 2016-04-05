@@ -15,12 +15,7 @@ import java.net.*;
 import javax.swing.JComponent;
 
 
-/**
-* Component for drawing !
-*
-* @author sylsau
-*
-*/
+//drawing area for the gui
 public class DrawArea extends JComponent implements Runnable {
   public Socket kkSocket = null;
   public static BufferedReader in = null;
@@ -35,7 +30,7 @@ public class DrawArea extends JComponent implements Runnable {
   boolean connect=true;
   
   public DrawArea(String IP, String Port) throws IOException{
-
+		//connect to client 
 		try { 	
 		    kkSocket = new Socket(IP, Integer.parseInt(Port));
 		    in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream())); 
@@ -53,23 +48,13 @@ public class DrawArea extends JComponent implements Runnable {
 		
 		}
     
-    /////////// Recieving Data From Server in another thread
+    /////////// Recieving Data From Server about other clients 
     Runnable DrawArea = new Runnable(){  
         public void run(){
             System.out.println("Runnable running");
             String inputLine;
             try {
-                /*while (true) {
-                    if (in.ready()) {
-                        if ((inputLine = in.readLine()) != null) {
-                            String[] retval = inputLine.split(",");
-                            if (g2!=null){
-                                g2.drawLine(Integer.parseInt(retval[0]), Integer.parseInt(retval[1]), Integer.parseInt(retval[2]), Integer.parseInt(retval[3]));
-                            }
-                            repaint();
-                        }
-                    }
-                }*/
+                
                 
                 
                 while ((inputLine = in.readLine()) != null) {
@@ -112,7 +97,7 @@ public class DrawArea extends JComponent implements Runnable {
     out = new PrintWriter(kkSocket.getOutputStream(), true);
     
     
-  ////////// Above is the
+
   
   
   //Creating drawing implementation 
@@ -160,13 +145,9 @@ public class DrawArea extends JComponent implements Runnable {
   
   // sends drawn data to server 
   public void sender(int ox, int oy, int cx, int cy, Socket kkSocket, String color) throws IOException{
-  	 //PrintWriter out = null;
-
-
-     //out = new PrintWriter(kkSocket.getOutputStream(), true);
 	String sending= Integer.toString(ox)+","+Integer.toString(oy)+","+Integer.toString(cx)+","+Integer.toString(cy)+","+color;
         out.println(sending);
-        //out.println("---------------------------------------------");
+
   }
  
   protected void paintComponent(Graphics g) {
